@@ -7,8 +7,8 @@ import { UserRepository } from "./src/SQL/repositories";
 import { transaction } from "./src/SQL/database/connection";
 import { UserService } from "./src/services/user";
 import { UserRouter } from "./src/router/user";
-const app = express();
 console.log(process.env.PORT);
+const app = express();
 
 app.use(morgan("common"));
 app.use(bodyParser.json());

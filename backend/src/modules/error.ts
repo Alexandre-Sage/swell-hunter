@@ -1,3 +1,5 @@
+import { httpStatus } from "./httpStatus";
+
 class CustomError extends Error {
   constructor(readonly httpStatus: number, readonly message: string) {
     super(message);
@@ -12,7 +14,8 @@ const sqliteError = (error: any) => {
     case "SQLITE_CONSTRAINT_UNIQUE": {
       const errorMessage = error.message.split(".");
       const fieldNameIndex = errorMessage.length - 1;
-      message = `The provided ${errorMessage[fieldNameIndex]} already exist`;
+      message = `The provided ${errorMessage[fieldNameIndex].split("_").join(" ")} already exist`;
+      httpStatus= 409
       break;
     }
   }
@@ -26,7 +29,7 @@ const errorHanlder = (error: any) => {
   if (error.message.split(":")[0] === "joiError")
     return {
       message: error.message.split(":")[1],
-      httpStatus: 500,
+      httpStatus: httpStatus.INPUT_ERROR,
     };
   else if (error.httpStatus)
     return {
