@@ -14,10 +14,14 @@ const sqliteError = (error: any) => {
     case "SQLITE_CONSTRAINT_UNIQUE": {
       const errorMessage = error.message.split(".");
       const fieldNameIndex = errorMessage.length - 1;
-      message = `The provided ${errorMessage[fieldNameIndex].split("_").join(" ")} already exist`;
-      httpStatus= 409
+      message = `The provided ${errorMessage[fieldNameIndex]
+        .split("_")
+        .join(" ")} already exist`;
+      httpStatus = 409;
       break;
     }
+    default:
+      console.log({ sql:error });
   }
   return {
     message,

@@ -10,7 +10,7 @@ import { UserRouter } from "./src/router/user";
 console.log(process.env.PORT);
 const app = express();
 
-app.use(morgan("common"));
+app.use(morgan(process.env.STAGE==="test"? "tiny": "dev"));
 app.use(bodyParser.json());
 
 const userRepository = new UserRepository(transaction);

@@ -42,13 +42,18 @@ export class Repository<ObjectType, RowType> {
       return rows.map((row) => this.mapper.dbRowToObject(row));
     });
   };
-  update = (data: ObjectType) => {
-    const row = this.mapper.objectToDbRow(data);
+  update = async ({
+    data,
+    searchValue,
+    columnName,
+    operator,
+  }: { data: ObjectType } & Omit<SqlWhereClause<RowType>, "selectedField">) => {
+    const row = this.mapper.objectToDbRow(data);    
     return this.transaction(async (transaction) => {
-      transaction
+      await transaction
         .table(this.table)
         .update(row)
-        .where("id", "=", `${data["id" as keyof ObjectType]}`);
+        .where(columnName || "id", operator||"=", searchValue);
     });
   };
   delete = (id: string) => {

@@ -1,6 +1,7 @@
 import { randomBytes, pbkdf2Sync } from "crypto";
 import { User } from "../types";
 import { CustomError } from "./error";
+import { httpStatus } from "./httpStatus";
 
 const hashPassword = (password: string) => {
   if (password !== "") {
@@ -28,7 +29,7 @@ const checkPassword = async ({
     "sha512"
   ).toString("hex");
   if (dbPassword !== hashedPassword)
-    throw new CustomError(400, "Invalid password");
+    throw new CustomError(httpStatus.AUTH_ERROR, "Invalid password");
   return true;
 };
 export { hashPassword, checkPassword };

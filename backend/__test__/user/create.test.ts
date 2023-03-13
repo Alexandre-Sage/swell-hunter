@@ -3,8 +3,10 @@ import chaiHttp from "chai-http";
 import { server } from "../../server";
 import { httpStatus } from "../../src/modules/httpStatus";
 import { UserRow } from "../../src/types";
+import { ChaiApi } from "../fixtures/ChaiApi.fixtures";
 import { fetchUsers, userTearDown } from "../fixtures/user.fixtures";
 chai.use(chaiHttp);
+
 suite("User creation suite", () => {
   suiteTeardown(async () => await userTearDown());
   test("Should create user successfuly", async () => {

@@ -1,4 +1,5 @@
 import { randomBytes, randomUUID } from "crypto";
+import { hashPassword } from "../../src/modules";
 import { transaction } from "../../src/SQL/database/connection";
 import { UserRepository } from "../../src/SQL/repositories";
 import { User, UserId } from "../../src/types";
@@ -14,20 +15,22 @@ const userFactory = ({
   id,
   password,
   phone,
-  salt,
   updatedAt,
   userName,
-}: Partial<User>): User => ({
-  createdAt: createdAt ?? now,
-  email: email ?? "test@test.com",
-  homeSpot: homeSpot ?? null,
-  id: id ?? (randomUUID() as UserId),
-  password: password ?? "test",
-  phone: phone ?? "0682569696",
-  salt: salt ?? "",
-  updatedAt: updatedAt ?? now,
-  userName: userName ?? "test",
-});
+}: Partial<User>): User => {
+  const { password: hashedPassword, salt } = hashPassword(password ?? "test");
+  return {
+    createdAt: createdAt ?? now,
+    email: email ?? "test@test.com",
+    homeSpot: homeSpot ?? null,
+    id: id ?? (randomUUID() as UserId),
+    password: hashedPassword,
+    phone: phone ?? "0682569696",
+    salt: salt,
+    updatedAt: updatedAt ?? now,
+    userName: userName ?? "test",
+  };
+};
 const userSetUp = async () => {
   const user = userFactory({ id: userIds[0] });
   return userRepository.create(user);
@@ -45,4 +48,4 @@ const fetchUser = () =>
 const fetchUsers = () =>
   transaction(async (tsx) => tsx.table("users").select("*"));
 
-export { userFactory, userSetUp, userIds, userTearDown, fetchUser, fetchUsers };
+export { userFactory, userSetUp, userIds, userTearDown, fetchUser, fetchUsers, userRepository };

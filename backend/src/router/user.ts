@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { composeHigherOrderAsync } from "sage-functional-library";
-import { CustomError, errorHanlder } from "../modules";
+import { CustomError, decodeToken, errorHanlder } from "../modules";
 import { httpStatus } from "../modules/httpStatus";
 import { UserService } from "../services/user";
 export class UserRouter {
@@ -27,7 +26,58 @@ export class UserRouter {
         });
       }
     });
-
+    router.post("/log-in", async (req, res) => {
+      const { payload } = req.body;
+      try {
+        const token = await service.logIn(payload);
+        res.status(httpStatus.GET).json({
+          payload: {
+            token,
+          },
+          error: false,
+        });
+      } catch (error) {
+        const { httpStatus, message } = errorHanlder(error);
+        res.status(httpStatus).json({
+          error: true,
+          payload: message,
+        });
+      }
+    });
+    router.get("/:id", async (req, res) => {
+      try {
+        const { id } = await decodeToken(req);
+        const payload = await service.fetchById(id);        
+        res.status(httpStatus.GET).json({
+          error: false,
+          payload,
+        });
+      } catch (error) {
+        const { httpStatus, message } = errorHanlder(error);
+        res.status(httpStatus).json({
+          payload: message,
+          error: true,
+        });
+      }
+    });
+    router.put("/:id",async (req,res)   =>{
+      const {payload}= req.body
+      try {
+        await decodeToken(req)
+        await this.service.update(payload)
+        res.status(httpStatus.PUT).json({
+          payload:"",
+          error:false,
+        })
+      } catch (error) {
+        const {httpStatus,message}=errorHanlder(error)
+        res.status(httpStatus).json({
+          payload:message,
+          error:true
+        })
+      }
+    })
     return router;
   };
+  
 }
