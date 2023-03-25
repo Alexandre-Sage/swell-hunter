@@ -18,7 +18,7 @@ export class UserRouter {
           payload: "User created",
           error: false,
         });
-      } catch (error) {
+      } catch (error) {        
         const { httpStatus, message } = errorHanlder(error);
         res.status(httpStatus).json({
           payload: message,

@@ -8,9 +8,11 @@
   "main": "index.js",
   "scripts": {
     "test": "rm -rf ./src/SQL/database/test.sqlite && touch ./src/SQL/database/test.sqlite && pnpm migration:test && mocha ./__test__/**/*index.test.ts --watch",
-    "migration:dev": "npx knex migrate:latest --env development",
+    "migration:dev": "npx knex migrate:latest --env dev",
     "migration:test": "npx knex migrate:latest --env test",
-    "migration:production": "npx knex migrate:latest --env production"
+    "migration:production": "npx knex migrate:latest --env production",
+    "build": "rm -rf ./dist && mkdir ./dist && npx tsc && pnpm migration:dev",
+    "start-dev": "pnpm build && node ./dist/server.js"
   },
   "keywords": [],
   "author": "",
@@ -19,13 +21,14 @@
     "@types/knex": "^0.16.1",
     "@types/node": "^18.15.0",
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "joi": "^17.8.3",
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.2",
     "morgan": "^1.10.0",
-    "sage-functional-library": "^1.0.12",
+    "sage-functional-library": "^1.0.15",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
@@ -33,6 +36,7 @@
     "@types/body-parser": "^1.19.2",
     "@types/chai": "^4.3.4",
     "@types/chai-http": "^4.2.0",
+    "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/mocha": "^10.0.1",

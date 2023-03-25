@@ -7,9 +7,11 @@ import { UserRepository } from "./src/SQL/repositories";
 import { transaction } from "./src/SQL/database/connection";
 import { UserService } from "./src/services/user";
 import { UserRouter } from "./src/router/user";
-console.log(process.env.PORT);
+import cors from "cors"
 const app = express();
-
+app.use(cors({
+  origin: "*"
+}))
 app.use(morgan(process.env.STAGE==="test"? "tiny": "dev"));
 app.use(bodyParser.json());
 
