@@ -13,6 +13,11 @@ interface ServerReponseI<ResponseDataType> {
   payload: ResponseDataType;
   error: boolean;
 }
+interface ServerErrorResponse {
+  error: boolean;
+  payload: string;
+}
+
 export const fetchMethods = {
   GET: "GET",
   POST: "POST",
@@ -31,11 +36,14 @@ class HttpFetch<Type> {
   ) {}
   fetch = async () => {
     const { method, url, headers, body } = this;
-    const request = await fetch(`${process.env.SERVER_HOST}${process.env.SERVER_PORT}${url}`, {
-      method,
-      headers: headers.getHeaders(),
-      body: JSON.stringify(structuredClone(body)),
-    });
+    const request = await fetch(
+      `${process.env.SERVER_HOST}${process.env.SERVER_PORT}${url}`,
+      {
+        method,
+        headers: headers.getHeaders(),
+        body: JSON.stringify(structuredClone(body)),
+      }
+    );
     this.response = await request.json();
     return this.response;
   };

@@ -1,5 +1,9 @@
 import { StandardButton } from "../../global/buttons";
 
-export interface SubmitButtonProps {}
+export interface SubmitButtonProps {
+  onPress: () => void;
+}
 
-export const SubmitButton = ({}: SubmitButtonProps) => (<StandardButton label="Submit" />)
+export const SubmitButton = ({ onPress }: SubmitButtonProps) => (
+  <StandardButton label="Submit" onPress={onPress} />
+);

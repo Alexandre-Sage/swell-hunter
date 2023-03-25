@@ -1,6 +1,5 @@
-import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
 import { View } from "react-native";
-import { devBorder } from "../styles";
+import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
 
 export const Wrapper = (props: ViewProps) => {
   return (

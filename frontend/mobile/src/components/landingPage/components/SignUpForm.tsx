@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Stack } from "../../global/containers";
 import { TextInput } from "../../global/inputs";
 import { Modal } from "../../global/modals/Modal";
+import { authApi } from "../api";
 import { SubmitButton } from "./SubmitButton";
 
 export interface SignupFormProps {
   toggleSignupForm: boolean;
   setToggleSignupForm: () => void;
+
 }
 
 interface Answers {
@@ -77,7 +79,7 @@ export const SignupForm = ({
         />
       </Stack>
       <Stack height={10}>
-        <SubmitButton />
+        <SubmitButton onPress={() => authApi.signUp(answers)} />
       </Stack>
     </Modal>
   );

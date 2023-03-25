@@ -1,7 +1,5 @@
-import { SetState } from "../../../types";
 import { StandardButton } from "../../global/buttons";
 import { Stack } from "../../global/containers";
-import { LandingPageReducerAction } from "../types";
 
 export interface ButtonsGroupProps {
   setToggleLoginForm: () => void;

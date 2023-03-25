@@ -22,7 +22,7 @@ export const StandardButton = ({
 }: StandardButtonProps) => {
   return (
     <Wrapper>
-      <TouchableOpacity
+      <TouchableOpacity 
         {...props}
         style={[
           {

@@ -1,16 +1,18 @@
-import { useReducer, useState } from "react";
-import { Text } from "react-native";
-import { ObjectValue } from "../../types";
-import { StandardButton } from "../global/buttons/StandardButton";
+import { useReducer } from "react";
 import { MainContainer } from "../global/containers";
 import { Stack } from "../global/containers/Stack";
-import { TextInput } from "../global/inputs";
 import { SurfAppLogoSvg } from "../svg/SurfAppLogo";
 import { ButtonsGroup, LoginForm } from "./components";
 import { SignupForm } from "./components/SignUpForm";
 import { LandingPageReducerAction, LandingPageState } from "./types";
-
-export interface LandingPageProps {}
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { RootStackParamList } from "../../../App";
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
+export interface LandingPageProps
+  extends NativeStackScreenProps<RootStackParamList, "LandingPage"> {}
 
 const landingPageReducer = (
   state: LandingPageState,
@@ -41,7 +43,7 @@ const landingPageReducer = (
   }
 };
 
-export const LandingPage = ({}: LandingPageProps) => {
+export const LandingPage = ({ navigation, route }: LandingPageProps) => {
   const [{ toggleButtonsGroup, toggleLoginForm, toggleSignupForm }, dispatch] =
     useReducer(landingPageReducer, {
       toggleButtonsGroup: true,
@@ -58,6 +60,7 @@ export const LandingPage = ({}: LandingPageProps) => {
         <SurfAppLogoSvg height={150} width={150} />
       </Stack>
       <LoginForm
+        navigation={navigation}
         setToggleLoginForm={() =>
           dispatch({
             type: "TOGGLE_LOGIN_FORM",

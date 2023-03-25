@@ -1,11 +1,11 @@
-import { Wrapper } from "../containers";
 import {
   Text,
   TextInput as RNTxtInput,
-  TextInputProps as RNTxtInputProps,
+  TextInputProps as RNTxtInputProps
 } from "react-native";
-import { borderMixin, devBorder, TextColor } from "../styles";
 import { CssHeight, CssWidth } from "../../../types";
+import { Wrapper } from "../containers";
+import { borderMixin, TextColor } from "../styles";
 
 export type TextInputProps = RNTxtInputProps & {
   label: string;
@@ -32,6 +32,7 @@ export const TextInput = ({
       <RNTxtInput
         {...props}
         style={{
+          color: TextColor,
           width: `${width ?? 55}vw`,
           height: `${height ?? 3.5}vh`,
           ...borderMixin,

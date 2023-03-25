@@ -11,7 +11,7 @@ import {
 
 export interface ModalProps extends ViewProps, SizeProps {
   toggleModal: boolean;
-  setToggleModal: <T>(param: T) => void;
+  setToggleModal: <T>(param: T) => void | SetState<boolean>;
 }
 
 export const Modal = ({
@@ -35,23 +35,30 @@ export const Modal = ({
           ...borderMixin,
           borderColor: ButtonBorderColor,
           position: "absolute",
-          zIndex: 999
+          zIndex: 999,
         },
         style,
       ]}
     >
       <Row
         style={{
-          width: "95%"
+          width: "95%",
         }}
       >
-        <TouchableOpacity style={{
-          marginLeft: "95%"
-        }} onPress={setToggleModal}>
-          <Text style={{
-            color: TextColor,
-            fontSize: 20
-          }} >X</Text>
+        <TouchableOpacity
+          style={{
+            marginLeft: "95%",
+          }}
+          onPress={setToggleModal}
+        >
+          <Text
+            style={{
+              color: TextColor,
+              fontSize: 20,
+            }}
+          >
+            X
+          </Text>
         </TouchableOpacity>
       </Row>
       {children}

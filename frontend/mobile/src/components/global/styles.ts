@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const BackGroundColor = "rgba(0, 0, 0, 0.89)";
 export const BorderColor = "rgba(25, 214, 255, 0.89)";
