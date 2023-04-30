@@ -41,12 +41,12 @@ export class UserService {
       password: dbPassword,
       id,
       userName,
-    } = await this.repository.fetchOne({
+    } = (await this.repository.fetchOne({
       searchValue: email,
       columnName: "email",
       operator: "=",
       selectedField: ["password", "salt", "user_name", "id"],
-    });
+    })).unwrap();
     await checkPassword({ dbPassword, password, salt });
     return setToken({ userName, id });
   };

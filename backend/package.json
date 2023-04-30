@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "rm -rf ./src/SQL/database/test.sqlite && touch ./src/SQL/database/test.sqlite && pnpm migration:test && mocha ./__test__/**/*index.test.ts --watch",
+    "test": "rm -rf ./src/SQL/database/test.sqlite && touch ./src/SQL/database/test.sqlite && pnpm migration:test && mocha ./__test__/**/*.test.ts --watch",
     "migration:dev": "npx knex migrate:latest --env dev",
     "migration:test": "npx knex migrate:latest --env test",
     "migration:production": "npx knex migrate:latest --env production",
@@ -28,7 +28,7 @@
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.2",
     "morgan": "^1.10.0",
-    "sage-functional-library": "^1.0.15",
+    "sage-functional-library": "^2.0.7",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },

@@ -1,6 +1,7 @@
 import React from "react";
 import { FlexStyle, View, ViewProps } from "react-native";
 import { columnSpacedAroundMixin, devBorder } from "../styles";
+import { formatHeigt, formatWidth } from "../../../modules/utils/style";
 
 export const Stack = ({
   children,
@@ -17,8 +18,14 @@ export const Stack = ({
       style={[
         {
           ...columnSpacedAroundMixin,
-          width: `${width ?? 80}vw`,
-          height: `${height ?? 25}vh`,
+          width: formatWidth({
+            defaultValue: 80,
+            width,
+          }),
+          height: formatHeigt({
+            defaultValue: 25,
+            height,
+          }),
         },
         props.style,
       ]}

@@ -32,9 +32,9 @@ suite("Update user suite", () => {
     });
     expect(body).to.have.property("payload");
     expect(status).to.be.equal(httpStatus.PUT);
-    const { id, userName, email } = await userRepository.fetchOne({
+    const { id, userName, email } = (await userRepository.fetchOne({
       searchValue: userIds[0],
-    });
+    })).unwrap();
     expect(id).to.be.equal(userIds[0]);
     expect(userName).to.be.equal(updatedUser.userName);
     expect(email).to.be.equal(updatedUser.email);

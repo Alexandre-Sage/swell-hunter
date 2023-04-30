@@ -1,12 +1,13 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { curryPatternAsync } from "sage-functional-library";
 import { ObjectValue } from "../../types";
 const urlPref = "http://localhost:4666";
 class HttpHeaders {
   private readonly contentType: string[] = ["Content-Type", "application/json"];
-  constructor(private readonly token: string) {}
-  getHeaders = (): HeadersInit => ({
+  constructor(private readonly token = AsyncStorage.getItem("token")) {}
+  getHeaders = async (): Promise<HeadersInit> => ({
     [this.contentType[0]]: this.contentType[1],
-    Authorization: `Bearer ${this.token}`,
+    Authorization: `Bearer ${await this.token}`,
   });
 }
 interface ServerReponseI<ResponseDataType> {
@@ -40,7 +41,7 @@ class HttpFetch<Type> {
       `${process.env.SERVER_HOST}${process.env.SERVER_PORT}${url}`,
       {
         method,
-        headers: headers.getHeaders(),
+        headers: await headers.getHeaders(),
         body: JSON.stringify(structuredClone(body)),
       }
     );
@@ -60,8 +61,6 @@ type FunctionalFetch = <T>(p2: {
   method: FetchMethod;
 }) => Promise<ServerReponseI<T>>;
 const curryedFetch = curryPatternAsync(initFetch);
-const functionalFetch: FunctionalFetch = curryedFetch(
-  new HttpHeaders(sessionStorage.jwt)
-);
+const functionalFetch: FunctionalFetch = curryedFetch(new HttpHeaders());
 
 export { HttpFetch, HttpHeaders, functionalFetch, type FetchMethod };

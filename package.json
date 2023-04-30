@@ -8,7 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-server-dev":"cd backend && pnpm start-dev"
+    "start-server:dev":"cd backend && pnpm start-dev",
+    "start-mobile-app:dev": "cd frontend/mobile && expo start --web",
+    "start-all:dev": "npm run start-server:dev | npm run start-mobile-app:dev"
   },
   "keywords": [],
   "author": "",

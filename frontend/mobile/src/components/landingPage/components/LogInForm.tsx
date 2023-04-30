@@ -19,15 +19,18 @@ export interface LoginFormProps {
   >;
 }
 interface LoginAnswers {
-  emain: string;
-  passwrod: string;
+  email: string;
+  password: string;
 }
 export const LoginForm = ({
   setToggleLoginForm,
   toggleLoginForm,
   navigation,
 }: LoginFormProps) => {
-  const [answers, setAnswers] = useState<LoginAnswers>({} as LoginAnswers);
+  const [answers, setAnswers] = useState<LoginAnswers>({
+    email: "test@test.com",
+    password: "test",
+  } as LoginAnswers);
   const {
     errorMessage,
     setErrorMessage,

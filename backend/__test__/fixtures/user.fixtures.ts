@@ -39,13 +39,24 @@ const userTearDown = async () => {
   return transaction(async (tsx) => tsx.table("users").delete("*"));
 };
 const fetchUser = () =>
-  userRepository.fetchOne({
-    columnName: "id",
-    operator: "=",
-    searchValue: userIds[0],
-  });
+  transaction((tsx) =>
+    tsx.table("users").select("*").where({ id: userIds[0] })
+  );
+//userRepository.fetchOne({
+//  columnName: "id",
+//  operator: "=",
+//  searchValue: userIds[0],
+//});
 
 const fetchUsers = () =>
   transaction(async (tsx) => tsx.table("users").select("*"));
 
-export { userFactory, userSetUp, userIds, userTearDown, fetchUser, fetchUsers, userRepository };
+export {
+  userFactory,
+  userSetUp,
+  userIds,
+  userTearDown,
+  fetchUser,
+  fetchUsers,
+  userRepository,
+};

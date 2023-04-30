@@ -1,3 +1,4 @@
+import { MaybeContainer } from "sage-functional-library";
 import { Mapper, SqlWhereClause, Transaction } from "../../types";
 
 export class Repository<ObjectType, RowType> {
@@ -19,13 +20,15 @@ export class Repository<ObjectType, RowType> {
     operator,
     selectedField,
   }: SqlWhereClause<RowType>) => {
-    return this.transaction<ObjectType>(async (transaction) => {
-      const row = await transaction
-        .table(this.table)
-        .select(selectedField ?? "*")
-        .where(columnName || "id", operator || "=", searchValue)
-        .first();
-      return this.mapper.dbRowToObject(row);
+    return this.transaction<MaybeContainer<ObjectType>>(async (transaction) => {
+      const row = new MaybeContainer(
+        await transaction
+          .table(this.table)
+          .select(selectedField ?? "*")
+          .where(columnName || "id", operator || "=", searchValue)
+          .first()
+      );
+      return  row.maybeMap(row => this.mapper.dbRowToObject(row)) ;
     });
   };
   fetchAll = ({
@@ -34,12 +37,12 @@ export class Repository<ObjectType, RowType> {
     searchValue,
     selectedField,
   }: SqlWhereClause<RowType>) => {
-    return this.transaction<ObjectType[]>(async (transaction) => {
-      const rows = await transaction
+    return this.transaction<MaybeContainer<ObjectType[]>>(async (transaction) => {
+      const rows = MaybeContainer.fromArray(await transaction
         .table(this.table)
         .select(selectedField || "*")
-        .where(columnName || "id", operator || "=", searchValue);
-      return rows.map((row) => this.mapper.dbRowToObject(row));
+        .where(columnName || "id", operator || "=", searchValue));
+      return rows.maybeMapArray((item)=> this.mapper.dbRowToObject(item));
     });
   };
   update = async ({
@@ -48,12 +51,12 @@ export class Repository<ObjectType, RowType> {
     columnName,
     operator,
   }: { data: ObjectType } & Omit<SqlWhereClause<RowType>, "selectedField">) => {
-    const row = this.mapper.objectToDbRow(data);    
+    const row = this.mapper.objectToDbRow(data);
     return this.transaction(async (transaction) => {
       await transaction
         .table(this.table)
         .update(row)
-        .where(columnName || "id", operator||"=", searchValue);
+        .where(columnName || "id", operator || "=", searchValue);
     });
   };
   delete = (id: string) => {
@@ -62,3 +65,5 @@ export class Repository<ObjectType, RowType> {
     });
   };
 }
+
+

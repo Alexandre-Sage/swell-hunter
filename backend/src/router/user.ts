@@ -18,7 +18,7 @@ export class UserRouter {
           payload: "User created",
           error: false,
         });
-      } catch (error) {        
+      } catch (error) {
         const { httpStatus, message } = errorHanlder(error);
         res.status(httpStatus).json({
           payload: message,
@@ -47,7 +47,7 @@ export class UserRouter {
     router.get("/:id", async (req, res) => {
       try {
         const { id } = await decodeToken(req);
-        const payload = await service.fetchById(id);        
+        const { salt, password, ...payload } = (await service.fetchById(id)).unwrap();
         res.status(httpStatus.GET).json({
           error: false,
           payload,
@@ -60,24 +60,23 @@ export class UserRouter {
         });
       }
     });
-    router.put("/:id",async (req,res)   =>{
-      const {payload}= req.body
+    router.put("/:id", async (req, res) => {
+      const { payload } = req.body;
       try {
-        await decodeToken(req)
-        await this.service.update(payload)
+        await decodeToken(req);
+        await this.service.update(payload);
         res.status(httpStatus.PUT).json({
-          payload:"",
-          error:false,
-        })
+          payload: "",
+          error: false,
+        });
       } catch (error) {
-        const {httpStatus,message}=errorHanlder(error)
+        const { httpStatus, message } = errorHanlder(error);
         res.status(httpStatus).json({
-          payload:message,
-          error:true
-        })
+          payload: message,
+          error: true,
+        });
       }
-    })
+    });
     return router;
   };
-  
 }
