@@ -12,12 +12,3 @@ export const spotJoiValidationSchema = Joi.object<Spot>({
   createdAt: Joi.date().required(),
 });
 
-interface T {
-  nonScheduledTaskTypeId :string
-}
-type TT = ObjectToDbTypeMapper<T>
-
-const fatctory = <Type>(p:Type) => (p: Partial<Type>) => {
-  type p = keyof Type
-}
-const t= fatctory<User>({} as User)   

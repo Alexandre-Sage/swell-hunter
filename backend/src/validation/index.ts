@@ -1,2 +1,2 @@
 export * from "./userJoiSchema";
-export * from "./spot"
+export * from "./spotJoiSchema";
